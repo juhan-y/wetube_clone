@@ -1,0 +1,27 @@
+{
+  "name": "wetube_clone",
+  "version": "1.0.0",
+  "description": "The best way to watch videos.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juhan-y/wetube-reloaded.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "author": "Juhan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juhan-y/wetube-reloaded/issues"
+  },
+  "homepage": "https://github.com/juhan-y/wetube-reloaded#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.2",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}
