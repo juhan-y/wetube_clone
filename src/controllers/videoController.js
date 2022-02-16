@@ -33,10 +33,15 @@ export const watch = (req, res) => {
   const video = videos[id - 1];
   return res.render("watch", { pageTitle: `Watching ${video.title}`, video });
 };
-export const edit = (req, res) => res.render("edit");
-export const search = (req, res) => res.send("Search");
-export const upload = (req, res) => res.send("Upload");
-export const deleteVideo = (req, res) => {
-  console.log(req.params);
-  return res.send("Delete Video");
+export const getEdit = (req, res) => {
+  const id = req.params.id;
+  const video = videos[id - 1];
+  return res.render("edit", { pageTitle: `Editing ${video.title}`, video });
+};
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  // console.log(req.body); // undefined -> 설정 필요 urlencoded
+  const { title } = req.body;
+  videos[id - 1].title = title;
+  return res.redirect(`/videos/${id}`);
 };

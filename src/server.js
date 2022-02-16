@@ -12,6 +12,8 @@ const loggerMiddleware = morgan("dev");
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(loggerMiddleware);
+app.use(express.urlencoded({ extended: true }));
+// form value를 express application이 이해하도록 하는 설정
 
 app.use("/", globalRouter);
 app.use("/videos", videoRouter);
