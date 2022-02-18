@@ -1,17 +1,20 @@
 import Video from "../models/Video";
 
-export const home = (req, res) => {
-  Video.find({}, (error, videos) => {
-    // console.log("errors", error);
-    // console.log("videos", videos);
-    return res.render("home", { pageTitle: "Home", videos: [] });
-  });
-  //Video.find함수는 call back
+// Video.find({}, (error, videos) => {
+//   // console.log("errors", error);
+//   // console.log("videos", videos);
+//   return res.render("home", { pageTitle: "Home", videos: [] });
+// });
+export const home = async (req, res) => {
+  const videos = await Video.find({}); // 여기서 javascript가 database를 기다려줌
+  return res.render("home", { pageTitle: "Home", videos });
 };
-export const watch = (req, res) => {
-  const id = req.params.id;
+export const watch = async (req, res) => {
+  const { id } = req.params;
+  const video = await Video.findById(id);
+  console.log(video);
   // ES6 방식 : const { id } = req.params;
-  return res.render("watch", { pageTitle: `Watching` });
+  return res.render("watch", { pageTitle: video.title, video });
 };
 export const getEdit = (req, res) => {
   const id = req.params.id;
@@ -28,17 +31,32 @@ export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
 };
 
-export const postUpload = (req, res) => {
-  const { title } = req.body;
+export const postUpload = async (req, res) => {
+  const { title, description, hashtags } = req.body;
+  try {
+    await Video.create({
+      title,
+      description,
+      hashtags: hashtags.split(",").map((word) => `#${word}`),
+    });
+    return res.redirect("/");
+  } catch (error) {
+    return res.render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
+    });
+  }
 
-  const newObj = {
-    title,
-    rating: 5,
-    comments: 2,
-    createdAt: "2 minutes ago",
-    views: 59,
-    id: videos.length + 1,
-  };
-  videos.push(newObj);
-  return res.redirect("/");
+  // 2번째 방법
+  // const video = new Video({
+  //   title,
+  //   description,
+  //   createdAt: Date.now(),
+  //   hashtags: hashtags.split(",").map((word) => `#${word}`),
+  //   meta: {
+  //     views: 0,
+  //     rating: 0,
+  //   },
+  // })
+  // const dbVideo = await video.save();
 };
