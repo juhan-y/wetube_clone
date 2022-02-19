@@ -1,0 +1,10 @@
+extends base
+
+block content 
+    form(method="POST")
+        input(name="name", placeholder="name" type="text", required)
+        input(name="email", placeholder="email" type="text", required)
+        input(name="username", placeholder="username" type="text", required)
+        input(name="password", placeholder="password" type="password", required)
+        input(name="location", placeholder="location" type="text", required)
+        input(type="submit", value="join")
