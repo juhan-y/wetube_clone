@@ -8,7 +8,7 @@ import Video from "../models/Video";
 //   return res.render("home", { pageTitle: "Home", videos: [] });
 // });
 export const home = async (req, res) => {
-  const videos = await Video.find({}); // 여기서 javascript가 database를 기다려줌
+  const videos = await Video.find({}).sort({ createdAt: "desc" }); // 여기서 javascript가 database를 기다려줌
   return res.render("home", { pageTitle: "Home", videos });
 };
 export const watch = async (req, res) => {
@@ -90,4 +90,30 @@ export const postUpload = async (req, res) => {
   //   },
   // })
   // const dbVideo = await video.save();
+};
+
+export const deleteVideo = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+
+  return res.redirect("/");
+};
+
+export const search = async (req, res) => {
+  // console.log(req.query); //get method 사용할 때 url에서 "?"뒤를 object로 가져옴.
+  const { keyword } = req.query;
+  let videos = [];
+  // search 페이지에 처음 들어왔을 때도 살행은 되나 req.query에는 아무것도 없다.
+  if (keyword) {
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(`${keyword}`, "i"), // i-> 대문자 소문자 구분 무시
+        // $regex: new RegExp(`^${keyword}`, "i"), -> starts only
+        // $regex: new RegExp(`${keyword}$`, "i"), -> endswith only
+        // $gt: 3, // greater than 3
+      },
+    });
+    return res.render("search", { pageTitle: "Search", videos });
+  }
+  return res.render("search", { pageTitle: "Search", videos });
 };
