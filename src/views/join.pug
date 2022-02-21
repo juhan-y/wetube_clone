@@ -1,10 +1,18 @@
 extends base
 
 block content 
+    if errorMessage 
+        span=errorMessage
     form(method="POST")
-        input(name="name", placeholder="name" type="text", required)
-        input(name="email", placeholder="email" type="text", required)
-        input(name="username", placeholder="username" type="text", required)
-        input(name="password", placeholder="password" type="password", required)
-        input(name="location", placeholder="location" type="text", required)
-        input(type="submit", value="join")
+        input(name="name", placeholder="Name" type="text", required)
+        input(name="email", placeholder="Email" type="text", required)
+        input(name="username", placeholder="Username" type="text", required)
+        input(name="password", placeholder="Password" type="password", required)
+        input(name="password2", placeholder="Confirmed Password" type="password", required)
+        input(name="location", placeholder="Location" type="text", required)
+        input(type="submit", value="Join")
+    hr
+    div 
+        span Already have an account? 
+        a(href="/login") Log in now &rarr;
+    
