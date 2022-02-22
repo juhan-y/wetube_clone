@@ -18,10 +18,16 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "Hello!",
-    resave: true,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" }),
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false, // 수정되지 않은 session을 저장할 것인가.
+    // -> false를 통해 login한 user(즉, userController에서)
+    // postLogin controller를 거친 user만 session 저장됨.
+    cookie: {
+      maxAge: 20000,
+    },
+
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     // session 저장 default -> mongoDB로 변경.
   })
 );

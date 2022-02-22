@@ -1,3 +1,5 @@
+import "dotenv/config";
+// process.env에 .env파일이 적용될 수 있게 한다.
 import "./db";
 import "./models/Video";
 import "./models/User";
