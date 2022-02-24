@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 // 배열과 객체, 일반 자료형 모두 선언가능
 const videoSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true, maxlength: 80 }, // == title: String,
+  fileUrl: { type: String, required: true },
   description: { type: String, required: true, trim: true, minlength: 20 },
   createdAt: { type: Date, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],

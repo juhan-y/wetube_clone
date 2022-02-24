@@ -10,7 +10,7 @@ import {
   postChangePassword,
 } from "../controllers/userController";
 import {
-  uploadFiles,
+  avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
 } from "../middlewares";
@@ -20,7 +20,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)
