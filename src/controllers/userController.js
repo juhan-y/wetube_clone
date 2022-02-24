@@ -146,23 +146,30 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username, location }, // ES6방식
+    file,
   } = req;
   // const i = req.session.user.id 와 같다.
   // const { name, email, username, location } = req.body;
-
   const anotherUser = await User.findOne({ $or: [{ username }, { email }] });
   if (anotherUser) {
-    if (_id !== anotherUser._id) {
+    if (_id !== anotherUser._id.valueOf()) {
+      console.log("There is same username or email in userDB!");
       return res.redirect("/users/edit");
     }
   }
 
   const updatedUser = await User.findByIdAndUpdate(
     _id,
-    { name, email, username, location },
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
+    },
     { new: true } // update하고 나서의 최신 data를 반환, false면 update 전 반환
   );
   // req.session.user = {
@@ -175,4 +182,38 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
 };
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  // send notification
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirmation },
+  } = req;
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect.",
+    });
+  }
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the confirmation.",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  return res.redirect("/users/logout");
+};
+
 export const see = (req, res) => res.send("See");
