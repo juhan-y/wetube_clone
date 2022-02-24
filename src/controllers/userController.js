@@ -143,7 +143,36 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-export const postEdit = (req, res) => {
-  return res.render("edit-profile");
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location }, // ES6방식
+  } = req;
+  // const i = req.session.user.id 와 같다.
+  // const { name, email, username, location } = req.body;
+
+  const anotherUser = await User.findOne({ $or: [{ username }, { email }] });
+  if (anotherUser) {
+    if (_id !== anotherUser._id) {
+      return res.redirect("/users/edit");
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    { name, email, username, location },
+    { new: true } // update하고 나서의 최신 data를 반환, false면 update 전 반환
+  );
+  // req.session.user = {
+  //   ...req.session.user, // req.session.user의 내용을 밖으로 꺼내준다.
+  //   name,
+  //   email,
+  //   username,
+  //   location,
+  // };
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
 };
 export const see = (req, res) => res.send("See");
