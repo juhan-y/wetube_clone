@@ -1,4 +1,5 @@
 import Video from "../models/Video";
+import User from "../models/User";
 // Video는 default export지만 formatHashtags는 default가 아님
 // 표기에 유의
 
@@ -13,7 +14,8 @@ export const home = async (req, res) => {
 };
 export const watch = async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const video = await Video.findById(id).populate("owner");
+  console.log(video);
   if (video === null) {
     return res.render("404", { pageTitle: "Video not found." });
   }
@@ -63,6 +65,9 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
@@ -70,6 +75,7 @@ export const postUpload = async (req, res) => {
       title,
       description,
       fileUrl,
+      owner: _id,
       hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");
