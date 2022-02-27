@@ -2,6 +2,6 @@
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/client/scss/styles.scss ***!
   \**********************************************************************************************************************/
 body {
-  background-color: red;
-  color: white;
+  background-color: beige;
+  color: blue;
 }

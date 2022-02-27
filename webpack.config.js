@@ -6,16 +6,19 @@ const path = require("path");
 module.exports = {
   entry: "./src/client/js/main.js", // file we want to transform!, 즉 사용할 파일
   mode: "development",
+  watch: true,
+  watchOptions: {
+    poll: true,
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
     }),
   ],
   output: {
-    filename: "js/main.js",
-    path: path.resolve(__dirname, "assets"), // 상대경로 입력하면 오류!
-    // 하지만 우리는 전체(절대)경로를 입력하기 귀찮다!
-    // -> path library 사용!
+    filename: "pppp/main.js",
+    path: path.resolve(__dirname, "assets"),
+    clean: true,
   },
   module: {
     rules: [
@@ -36,3 +39,6 @@ module.exports = {
     ],
   },
 };
+// 상대경로 입력하면 오류!
+// 하지만 우리는 전체(절대)경로를 입력하기 귀찮다!
+// -> path library 사용!
