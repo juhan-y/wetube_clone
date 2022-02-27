@@ -14,6 +14,7 @@ app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(loggerMiddleware);
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 app.use(express.urlencoded({ extended: true }));
 // form value를 express application이 이해하도록 하는 설정
 
