@@ -9,7 +9,9 @@ import User from "../models/User";
 //   return res.render("home", { pageTitle: "Home", videos: [] });
 // });
 export const home = async (req, res) => {
-  const videos = await Video.find({}).sort({ createdAt: "desc" }); // 여기서 javascript가 database를 기다려줌
+  const videos = await Video.find({})
+    .sort({ createdAt: "desc" })
+    .populate("owner"); // 여기서 javascript가 database를 기다려줌
   return res.render("home", { pageTitle: "Home", videos });
 };
 export const watch = async (req, res) => {
@@ -147,7 +149,7 @@ export const search = async (req, res) => {
         // $regex: new RegExp(`${keyword}$`, "i"), -> endswith only
         // $gt: 3, // greater than 3
       },
-    });
+    }).populate("owner");
     return res.render("search", { pageTitle: "Search", videos });
   }
   return res.render("search", { pageTitle: "Search", videos });
