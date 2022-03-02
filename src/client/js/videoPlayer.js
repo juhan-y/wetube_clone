@@ -73,7 +73,7 @@ const handleTimeUpdate = () => {
   currentTime.innerText = formatTime(Math.floor(video.currentTime));
   timeline.value = Math.floor(video.currentTime);
   if (video.ended) {
-    playBtn.innerText = "Play";
+    playBtnIcon.classList = "fas fa-play";
   }
 };
 
@@ -122,10 +122,17 @@ const handleKeydown = (event) => {
     } else {
       video.pause();
     }
-    playBtn.innerText = video.paused ? "Play" : "Pause";
+    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
   } else if (event.keyCode === 116) {
     location.reload();
   }
+};
+
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
 };
 
 playBtn.addEventListener("click", handlePlayClick);
@@ -139,3 +146,4 @@ videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 window.addEventListener("keydown", handleKeydown);
 video.addEventListener("click", handlePlayClick);
+video.addEventListener("ended", handleEnded);

@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 import { localsMiddleware } from "./middlewares";
+import apiRouter from "./routers/apiRouter";
 
 const app = express();
 const loggerMiddleware = morgan("dev");
@@ -16,6 +17,7 @@ app.use(loggerMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 app.use(express.urlencoded({ extended: true }));
+app.use("/api", apiRouter);
 // form value를 express application이 이해하도록 하는 설정
 
 app.use(
