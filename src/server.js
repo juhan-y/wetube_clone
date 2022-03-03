@@ -13,10 +13,16 @@ const loggerMiddleware = morgan("dev");
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  next();
+}); // ffmpeg할 때 오류 방지 코드
 app.use(loggerMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 app.use(express.urlencoded({ extended: true }));
+app.use("/ffmpeg", express.static("node_modules/@ffmpeg/core/dist")); // ffmpeg할 때 오류 방지 코드
 app.use("/api", apiRouter);
 // form value를 express application이 이해하도록 하는 설정
 
