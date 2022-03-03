@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     main: "./src/client/js/main.js",
     videoPlayer: "./src/client/js/videoPlayer.js",
+    recorder: "./src/client/js/recorder.js",
   }, // file we want to transform!, 즉 사용할 파일
   mode: "development",
   watch: true,
