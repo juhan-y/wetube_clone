@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import rootRouter from "./routers/rootRouter";
 import MongoStore from "connect-mongo";
 import videoRouter from "./routers/videoRouter";
@@ -41,7 +42,7 @@ app.use(
     // session 저장 default -> mongoDB로 변경.
   })
 );
-
+app.use(flash());
 app.use(localsMiddleware);
 // 반드시 sessionStore 뒤에 위치 해야함!
 // 그렇지 않으면 실행안됨!
