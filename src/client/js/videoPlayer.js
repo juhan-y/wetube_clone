@@ -115,7 +115,6 @@ const handleMouseLeave = () => {
 };
 
 const handleKeydown = (event) => {
-  event.preventDefault();
   if (event.keyCode === 32) {
     if (video.paused) {
       video.play();
@@ -129,11 +128,8 @@ const handleKeydown = (event) => {
 };
 
 const handleEnded = () => {
-  const {
-    dataset: { id },
-  } = videoContainer;
-  console.log(id);
-  fetch(`/api/videos/${id}/view`, {
+  const { id } = videoContainer.dataset;
+  fetch("/api/videos/" + id + "/view", {
     method: "POST",
   });
 };
