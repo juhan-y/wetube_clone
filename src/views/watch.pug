@@ -2,13 +2,13 @@ extends base
 
 block content
     div#videoContainer(data-id=video._id)
-        video(src="/" + video.fileUrl)
+        video(src=video.fileUrl)
         div#videoControls.videoControls
             div.videoControls__play
                 span#play.videoControls__playBtn
                     i.fas.fa-play
                 div.videoControls__time
-                    span#currentTime 00:00
+                    span#currenTime 00:00
                     span  / 
                     span#totalTime 00:00
             input(type="range",step="1", value="0", min="0")#timeline.videoControls__timeline
@@ -29,19 +29,19 @@ block content
             a(href=`${video.id}/edit`) Edit Video &rarr;
             br
             a(href=`${video.id}/delete`) Delete Video &rarr;
-        if loggedIn 
-            div.video__add-comments
-                form.video__comment-form#commentForm
-                    textarea(cols="30", rows="10", placeholder="Write a nice comment...")
-                    button Add Comment
-        div.video__comments
-            ul
-                each comment in video.comments.reverse()
-                    li.video__comment(data-id=comment._id)
-                        i.fas.fa-comment
-                        span  #{comment.text}
-                        if String(loggedInUser._id) === String(comment.owner._id)
-                            span#delete__comment ❌
+    if loggedIn 
+        div.video__add-comments
+            form.video__comment-form#commentForm
+                textarea(cols="30", rows="10", placeholder="Write a nice comment...")
+                button Add Comment
+    div.video__comments
+        ul
+            each comment in video.comments.reverse()
+                li.video__comment(data-id=comment._id)
+                    i.fas.fa-comment
+                    span  #{comment.text}
+                    if String(loggedInUser._id) === String(comment.owner._id)
+                        span#delete__comment ❌
                         
 block scripts
     script(src="/static/js/videoPlayer.js")

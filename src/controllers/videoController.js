@@ -160,7 +160,6 @@ export const search = async (req, res) => {
 };
 
 export const registerView = async (req, res) => {
-  console.log(req.params);
   const { id } = req.params;
   const video = await Video.findById(id);
 
@@ -191,7 +190,6 @@ export const createComment = async (req, res) => {
   });
   await video.comments.push(comment._id);
   await video.save();
-  console.log("Create Comment!");
   return res.status(201).json({ newCommentId: comment._id });
 };
 
