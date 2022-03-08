@@ -22,7 +22,8 @@ header
                                 img.header__avatar(src=loggedInUser.avatarUrl)
                             else 
                                 img.header__avatar(src="/" + loggedInUser.avatarUrl)
-            
+
+            else            
                 li 
                     a(href="/login") Login       
                 li 
